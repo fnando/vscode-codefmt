@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "curly": "error",
+    "eqeqeq": "error",
+    "semi": "error"
+  }
+}
