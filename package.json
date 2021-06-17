@@ -7,7 +7,7 @@
     "url": "https://github.com/fnando/vscode-codefmt"
   },
   "publisher": "fnando",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "engines": {
     "vscode": "^1.57.0"
   },
