@@ -4,11 +4,9 @@ import * as codefmt from "./codefmt";
 let statusBarItem: vscode.StatusBarItem;
 
 export function activate(context: vscode.ExtensionContext) {
-  codefmt.debug("extension has been activated!");
-
   statusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
-    10_000
+    10_000,
   );
   statusBarItem.show();
 
@@ -32,8 +30,8 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.workspace.onWillSaveTextDocument(
       ({ document }: vscode.TextDocumentWillSaveEvent) => {
         codefmt.formatDebounced({ document, statusBarItem, onSave: true });
-      }
-    )
+      },
+    ),
   );
 }
 

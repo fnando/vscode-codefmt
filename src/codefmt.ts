@@ -22,15 +22,11 @@ interface Formatter {
   configFiles: string[];
 }
 
-function sleep(delay:number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, delay));
+function sleep(delay: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, delay));
 }
 
-export function debug(...args: any[]) {
-  if (!config().debug) {
-    return;
-  }
-
+export function log(...args: any[]) {
   args = args.map((item) => {
     if (["boolean", "string", "number"].includes(typeof item)) {
       return item.toString();
@@ -47,7 +43,11 @@ export function debug(...args: any[]) {
     return JSON.stringify(item, null, 2);
   });
 
-  output.appendLine(`[codefmt] ${args.join(" ")}`);
+  output.appendLine(args.join(" "));
+}
+
+export function debug(...args: any) {
+  log("[codefmt]", ...args);
 }
 
 export function config(): Config {
@@ -67,6 +67,7 @@ export async function format({
 }: FormatParams): Promise<void> {
   statusBarItem.show();
   statusBarItem.text = "";
+  output.clear();
 
   if (onSave) {
     if (!config().enableOnSave) {
@@ -76,23 +77,32 @@ export async function format({
   }
 
   if (config().debug) {
-    output.clear();
     output.show(true);
   }
 
+  const dirs = vscode.workspace.workspaceFolders?.map(
+    (folder) => folder.uri.path,
+  ) ?? [path.dirname(document.fileName)];
+  const rootDir = findRootDir(dirs, document.fileName);
+
+  debug("current dir:", process.cwd());
+  debug("root dir:", rootDir);
   debug("file:", document.fileName);
   debug("language:", document.languageId);
 
   const formatters = findFormatters(document.languageId);
 
-  debug("formatters that will be applied:", formatters);
+  debug(
+    "formatters that will be applied:",
+    formatters.map((formatter) => formatter.command[0]),
+  );
 
   for (const formatter of formatters) {
     const formatterName = formatter.command[0];
     statusBarItem.text = `$(run-all) ${formatterName}`;
 
     try {
-      await run(document, formatter);
+      await run({ document, formatter, rootDir });
     } catch (error) {
       // noop
     }
@@ -103,8 +113,6 @@ export async function format({
 }
 
 function findFormatters(languageId: string): Formatter[] {
-  debug("enabled formatters:", settings.formatters);
-
   return settings.formatters
     .map(
       (formatter) =>
@@ -113,23 +121,28 @@ function findFormatters(languageId: string): Formatter[] {
     .filter((formatter) => formatter.languages.includes(languageId));
 }
 
-function run(document: vscode.TextDocument, formatter: Formatter) {
+function run({
+  document,
+  formatter,
+  rootDir,
+}: {
+  document: vscode.TextDocument;
+  formatter: Formatter;
+  rootDir: string;
+}) {
   const started = Date.now();
   const { fileName } = document;
-  const dirs = vscode.workspace.workspaceFolders?.map(
-    (folder) => folder.uri.path,
-  ) ?? [path.dirname(fileName)];
+
   const formatterName = formatter.command[0];
 
-  debug("current dir:", process.cwd());
-  debug("formatting", fileName, "with", formatterName);
-  debug("dirs:", dirs);
+  log("\n---------------------------------------------------------\n");
 
-  const rootDir = findRootDir(dirs, fileName);
+  debug("formatting", fileName, "with", formatterName);
+
   const configFile = findConfigFile(rootDir, formatter);
 
   if (!configFile) {
-    debug(formatterName, "doesn't have a config file, so skipping.");
+    debug(formatterName, "doesn't have a config file.");
   }
 
   const [command, ...args] = expandArgs(formatter.command, {
@@ -138,30 +151,22 @@ function run(document: vscode.TextDocument, formatter: Formatter) {
     $debug: config().debug ? formatter.debug : null,
   });
 
-  debug("root dir:", rootDir);
   debug("config file:", configFile);
   debug("command:", command, args);
 
-  const which = spawnSync("which", [formatterName]);
+  const response = spawnSync(command, args, { cwd: rootDir, env: process.env });
+  const stdout = response.stdout.toString().trim();
+  const stderr = response.stderr.toString().trim();
 
-  if (which.status !== 0) {
-    debug(
-      "couldn't find",
-      formatterName,
-      "within",
-      `PATH="${process.env.PATH}"`,
-    );
-
-    return;
+  if (stdout) {
+    debug("stdout:\n", stdout, "\n");
   }
 
-  debug("using", which.stdout.toString());
+  if (stderr) {
+    debug("stderr:\n", stderr, "\n");
+  }
 
-  const response = spawnSync(command, args, { cwd: rootDir, env: process.env });
-
-  debug("stdout:\n", response.stdout.toString(), "\n");
-  debug("stderr:\n", response.stderr.toString(), "\n");
-  debug(formatterName, "command finished with exit", response.status);
+  debug(formatterName, `command finished with exit ${response.status}`);
 
   if (response.status !== 0) {
     debug(
@@ -179,7 +184,11 @@ function expandArgs(command: string[], args: { [key: string]: unknown }) {
       // @ts-ignore
       command[command.indexOf(key)] = args[key];
     } else {
-      command.splice(command.indexOf(key) - 1, 2);
+      if (key === "$config") {
+        command.splice(command.indexOf(key) - 1, 2);
+      } else {
+        command.splice(command.indexOf(key), 1);
+      }
     }
   });
 
