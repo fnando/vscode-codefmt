@@ -3,22 +3,27 @@ import * as path from "path";
 import { existsSync } from "fs";
 import { spawnSync } from "child_process";
 
-import * as settings from "./codefmt.json";
+import * as _settings from "./codefmt.json";
 import "./config/eslint.json";
 import "./config/prettier.json";
 
 let output: vscode.OutputChannel = vscode.window.createOutputChannel("codefmt");
 
+interface Formatters {
+  [key: string]: Formatter;
+}
+
 interface Config extends vscode.WorkspaceConfiguration {
   enableOnSave: boolean;
   debug: boolean;
+  preferredFormatters: string[];
+  formatters: Formatters;
 }
 
 interface Formatter {
   command: string[];
   languages: string[];
   debug: string[];
-  defaultConfig: null | string;
   configFiles: string[];
 }
 
@@ -113,11 +118,14 @@ export async function format({
 }
 
 function findFormatters(languageId: string): Formatter[] {
-  return settings.formatters
-    .map(
-      (formatter) =>
-        (settings as unknown as { [key: string]: Formatter })[formatter],
-    )
+  const formatters: Formatters = {
+    ..._settings.formatters,
+    ...config().formatters,
+  };
+
+  return config()
+    .preferredFormatters.map((formatter) => formatters[formatter])
+    .filter(Boolean)
     .filter((formatter) => formatter.languages.includes(languageId));
 }
 

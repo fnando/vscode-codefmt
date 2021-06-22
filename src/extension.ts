@@ -4,6 +4,11 @@ import * as codefmt from "./codefmt";
 let statusBarItem: vscode.StatusBarItem;
 
 export function activate(context: vscode.ExtensionContext) {
+  codefmt.debug(
+    "settings:",
+    JSON.stringify(vscode.workspace.getConfiguration("codefmt"), null, 2),
+  );
+
   statusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
     10_000,

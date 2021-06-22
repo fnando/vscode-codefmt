@@ -40,6 +40,315 @@
           "type": "boolean",
           "description": "When debug mode is enabled, commands will be executed with additional debugging flags",
           "default": false
+        },
+        "codefmt.preferredFormatters": {
+          "type": "array",
+          "description": "List of enabled formatters",
+          "default": [
+            "gofumpt",
+            "rubocop",
+            "prettier",
+            "eslint",
+            "php-cs-fixer",
+            "rustfmt",
+            "svgo",
+            "swiftformat",
+            "flutter",
+            "yapf"
+          ]
+        },
+        "codefmt.formatters": {
+          "type": "object",
+          "description": "The commands that will be used to format code.",
+          "default": {
+            "yapf": {
+              "command": [
+                "yapf",
+                "$debug",
+                "--in-place",
+                "$file"
+              ],
+              "languages": [
+                "python"
+              ],
+              "debug": [
+                "--verbose"
+              ],
+              "configFiles": []
+            },
+            "flutter": {
+              "command": [
+                "flutter",
+                "format",
+                "$file"
+              ],
+              "languages": [
+                "dart"
+              ],
+              "debug": [],
+              "configFiles": []
+            },
+            "dartfmt": {
+              "command": [
+                "dartfmt",
+                "--fix",
+                "--line-length",
+                "80",
+                "--overwrite",
+                "$file"
+              ],
+              "languages": [
+                "dart"
+              ],
+              "debug": [],
+              "configFiles": []
+            },
+            "svgo": {
+              "command": [
+                "svgo",
+                "--config",
+                "$config",
+                "--multipass",
+                "--pretty",
+                "--input",
+                "$file",
+                "--output",
+                "$file"
+              ],
+              "languages": [
+                "text.xml.svg"
+              ],
+              "debug": [],
+              "configFiles": [
+                ".svgo.yml",
+                ".svgo.json",
+                "svgo.config.json",
+                ".svgo.config.json",
+                ".svgorc.json",
+                ".svgorc.yml"
+              ]
+            },
+            "autopep8": {
+              "command": [
+                "autopep8",
+                "$debug",
+                "--in-place",
+                "--aggressive",
+                "--global-config",
+                "$config",
+                "$file"
+              ],
+              "languages": [
+                "python"
+              ],
+              "debug": [
+                "--verbose"
+              ],
+              "configFiles": [
+                ".pycodestyle",
+                "setup.cfg",
+                "tox.ini",
+                ".pep8",
+                ".flake8"
+              ]
+            },
+            "swiftformat": {
+              "command": [
+                "swiftformat",
+                "$file",
+                "--output",
+                "$file",
+                "--config",
+                "$config",
+                "$debug"
+              ],
+              "languages": [
+                "swift"
+              ],
+              "debug": [
+                "--verbose"
+              ],
+              "configFiles": [
+                ".swiftformat"
+              ]
+            },
+            "php-cs-fixer": {
+              "command": [
+                "php-cs-fixer",
+                "fix",
+                "$debug",
+                "--using-cache",
+                "no",
+                "--config",
+                "$config",
+                "$file"
+              ],
+              "languages": [
+                "php"
+              ],
+              "debug": [
+                "-vvv"
+              ],
+              "configFiles": [
+                ".php_cs"
+              ]
+            },
+            "gofumpt": {
+              "command": [
+                "gofumpt",
+                "-w",
+                "$file"
+              ],
+              "languages": [
+                "go"
+              ],
+              "debug": [],
+              "configFiles": []
+            },
+            "goimports": {
+              "command": [
+                "goimports",
+                "-w",
+                "$file"
+              ],
+              "languages": [
+                "go"
+              ],
+              "debug": [],
+              "configFiles": []
+            },
+            "gofmt": {
+              "command": [
+                "gofmt",
+                "-w",
+                "$file"
+              ],
+              "languages": [
+                "go"
+              ],
+              "debug": [],
+              "configFiles": []
+            },
+            "rustfmt": {
+              "command": [
+                "rustfmt",
+                "$debug",
+                "--emit",
+                "files",
+                "--config-path",
+                "$config",
+                "$file"
+              ],
+              "languages": [
+                "rust"
+              ],
+              "debug": [
+                "--verbose"
+              ],
+              "configFiles": [
+                "rustfmt.toml",
+                ".rustfmt.toml"
+              ]
+            },
+            "rubocop": {
+              "command": [
+                "rubocop",
+                "$debug",
+                "--auto-correct-all",
+                "--config",
+                "$config",
+                "$file"
+              ],
+              "languages": [
+                "ruby"
+              ],
+              "debug": [
+                "--debug",
+                "--extra-details"
+              ],
+              "configFiles": [
+                ".rubocop.yml"
+              ]
+            },
+            "rubyfmt": {
+              "command": [
+                "rubyfmt",
+                "-i",
+                "$file"
+              ],
+              "languages": [
+                "ruby"
+              ],
+              "debug": [],
+              "configFiles": []
+            },
+            "prettier": {
+              "command": [
+                "prettier",
+                "$debug",
+                "--write",
+                "--config",
+                "$config",
+                "$file"
+              ],
+              "languages": [
+                "css",
+                "javascript",
+                "json",
+                "jsonc",
+                "jsx",
+                "postcss",
+                "scss",
+                "typescript",
+                "typescriptreact",
+                "yaml",
+                "markdown"
+              ],
+              "debug": [
+                "--loglevel",
+                "debug"
+              ],
+              "configFiles": [
+                ".prettierrc",
+                ".prettierrc.json",
+                ".prettierrc.yml",
+                ".prettierrc.yaml",
+                ".prettierrc.json5",
+                ".prettierrc.js",
+                ".prettierrc.cjs",
+                "prettier.config.js",
+                "prettier.config.cjs",
+                ".prettierrc.toml"
+              ]
+            },
+            "eslint": {
+              "command": [
+                "eslint",
+                "$debug",
+                "--fix",
+                "--config",
+                "$config",
+                "$file"
+              ],
+              "languages": [
+                "javascript",
+                "jsx",
+                "typescript",
+                "typescriptreact"
+              ],
+              "debug": [
+                "--debug"
+              ],
+              "configFiles": [
+                ".eslintrc.js",
+                ".eslintrc.cjs",
+                ".eslintrc.yaml",
+                ".eslintrc.yml",
+                ".eslintrc.json",
+                ".eslintrc"
+              ]
+            }
+          }
         }
       }
     },
