@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { existsSync } from "fs";
-import { spawnSync } from "child_process";
+import { existsSync, writeFileSync } from "fs";
+import { spawnSync, SpawnSyncReturns } from "child_process";
 
 import * as _settings from "./codefmt.json";
 import "./config/eslint.json";
@@ -21,6 +21,7 @@ interface Config extends vscode.WorkspaceConfiguration {
 }
 
 interface Formatter {
+  useStdout: boolean;
   command: string[];
   languages: string[];
   debug: string[];
@@ -140,17 +141,17 @@ function run({
 }) {
   const started = Date.now();
   const { fileName } = document;
-
   const formatterName = formatter.command[0];
+  const quotedFormatterName = JSON.stringify(formatterName);
 
   log("\n---------------------------------------------------------\n");
 
-  debug("formatting", fileName, "with", formatterName);
+  debug("formatting", JSON.stringify(fileName), "with", quotedFormatterName);
 
   const configFile = findConfigFile(rootDir, formatter);
 
   if (!configFile) {
-    debug(formatterName, "doesn't have a config file.");
+    debug("formatter doesn't have a config file.");
   }
 
   const [command, ...args] = expandArgs(formatter.command, {
@@ -159,14 +160,51 @@ function run({
     $debug: config().debug ? formatter.debug : null,
   });
 
+  const spawnOptions = { cwd: rootDir, env: process.env };
+
+  let response: SpawnSyncReturns<Buffer>;
+
+  response = spawnSync("which", [command], spawnOptions);
+
+  if (response.status !== 0) {
+    debug(
+      "The command",
+      quotedFormatterName,
+      "couldn't be found, so skipping.",
+    );
+    return;
+  }
+
   debug("config file:", configFile);
   debug("command:", command, args);
 
-  const response = spawnSync(command, args, { cwd: rootDir, env: process.env });
+  try {
+    response = spawnSync(command, args, spawnOptions);
+  } catch (error) {
+    debug(`error while running formatter:`, error.message);
+    return;
+  }
+
+  if (response.error) {
+    debug("formatter failed to run:", response.error.toString());
+    return;
+  }
+
   const stdout = response.stdout.toString().trim();
   const stderr = response.stderr.toString().trim();
 
-  if (stdout) {
+  if (formatter.useStdout && response.status === 0) {
+    try {
+      writeFileSync(fileName, stdout);
+    } catch (error) {
+      vscode.window.showErrorMessage(
+        "Could not save formatted file. Check codefmt output for more details.",
+      );
+      debug("error:", error.toString());
+    }
+  }
+
+  if (stdout && !formatter.useStdout) {
     debug("stdout:\n", stdout, "\n");
   }
 
@@ -174,7 +212,7 @@ function run({
     debug("stderr:\n", stderr, "\n");
   }
 
-  debug(formatterName, `command finished with exit ${response.status}`);
+  debug(quotedFormatterName, `command finished with exit ${response.status}`);
 
   if (response.status !== 0) {
     debug(
@@ -187,6 +225,10 @@ function expandArgs(command: string[], args: { [key: string]: unknown }) {
   command = JSON.parse(JSON.stringify(command));
 
   Object.keys(args).forEach((key) => {
+    if (!command.includes(key)) {
+      return;
+    }
+
     if (args[key]) {
       // This will be fixed down below by calling flat.
       // @ts-ignore

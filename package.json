@@ -47,6 +47,7 @@
           "default": [
             "gofumpt",
             "rubocop",
+            "jq",
             "prettier",
             "eslint",
             "php-cs-fixer",
@@ -74,7 +75,8 @@
               "debug": [
                 "--verbose"
               ],
-              "configFiles": []
+              "configFiles": [],
+              "useStdout": false
             },
             "flutter": {
               "command": [
@@ -86,7 +88,8 @@
                 "dart"
               ],
               "debug": [],
-              "configFiles": []
+              "configFiles": [],
+              "useStdout": false
             },
             "dartfmt": {
               "command": [
@@ -101,7 +104,8 @@
                 "dart"
               ],
               "debug": [],
-              "configFiles": []
+              "configFiles": [],
+              "useStdout": false
             },
             "svgo": {
               "command": [
@@ -126,7 +130,8 @@
                 ".svgo.config.json",
                 ".svgorc.json",
                 ".svgorc.yml"
-              ]
+              ],
+              "useStdout": false
             },
             "autopep8": {
               "command": [
@@ -150,7 +155,8 @@
                 "tox.ini",
                 ".pep8",
                 ".flake8"
-              ]
+              ],
+              "useStdout": false
             },
             "swiftformat": {
               "command": [
@@ -170,7 +176,8 @@
               ],
               "configFiles": [
                 ".swiftformat"
-              ]
+              ],
+              "useStdout": false
             },
             "php-cs-fixer": {
               "command": [
@@ -191,7 +198,8 @@
               ],
               "configFiles": [
                 ".php_cs"
-              ]
+              ],
+              "useStdout": false
             },
             "gofumpt": {
               "command": [
@@ -203,7 +211,8 @@
                 "go"
               ],
               "debug": [],
-              "configFiles": []
+              "configFiles": [],
+              "useStdout": false
             },
             "goimports": {
               "command": [
@@ -215,7 +224,8 @@
                 "go"
               ],
               "debug": [],
-              "configFiles": []
+              "configFiles": [],
+              "useStdout": false
             },
             "gofmt": {
               "command": [
@@ -227,7 +237,8 @@
                 "go"
               ],
               "debug": [],
-              "configFiles": []
+              "configFiles": [],
+              "useStdout": false
             },
             "rustfmt": {
               "command": [
@@ -248,7 +259,8 @@
               "configFiles": [
                 "rustfmt.toml",
                 ".rustfmt.toml"
-              ]
+              ],
+              "useStdout": false
             },
             "rubocop": {
               "command": [
@@ -268,7 +280,8 @@
               ],
               "configFiles": [
                 ".rubocop.yml"
-              ]
+              ],
+              "useStdout": false
             },
             "rubyfmt": {
               "command": [
@@ -280,7 +293,8 @@
                 "ruby"
               ],
               "debug": [],
-              "configFiles": []
+              "configFiles": [],
+              "useStdout": false
             },
             "prettier": {
               "command": [
@@ -319,7 +333,8 @@
                 "prettier.config.js",
                 "prettier.config.cjs",
                 ".prettierrc.toml"
-              ]
+              ],
+              "useStdout": false
             },
             "eslint": {
               "command": [
@@ -346,7 +361,22 @@
                 ".eslintrc.yml",
                 ".eslintrc.json",
                 ".eslintrc"
-              ]
+              ],
+              "useStdout": false
+            },
+            "jq": {
+              "command": [
+                "jq",
+                "--sort-keys",
+                ".",
+                "$file"
+              ],
+              "languages": [
+                "json"
+              ],
+              "debug": [],
+              "configFiles": [],
+              "useStdout": true
             }
           }
         }

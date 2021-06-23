@@ -18,6 +18,7 @@ Includes support for running the following formatters:
 - [SVGO](https://github.com/svg/svgo)
 - [Flutter](https://flutter.dev/)
 - [Dart’s dartfmt](https://dart.dev/tools/dartfmt)
+- [jq](https://stedolan.github.io/jq/)
 
 ## Usage
 
@@ -36,6 +37,7 @@ By default, the following formatters will be used:
   "rubocop",
   "prettier",
   "eslint",
+  "jq",
   "php-cs-fixer",
   "rustfmt",
   "svgo",
@@ -56,6 +58,7 @@ The following example uses `rubyfmt` instead of `rubocop`.
   "codefmt.preferredFormatters": [
     "gofumpt",
     "rubyfmt",
+    "jq",
     "prettier",
     "eslint",
     "php-cs-fixer",
@@ -67,6 +70,9 @@ The following example uses `rubyfmt` instead of `rubocop`.
   ]
 }
 ```
+
+**Attention:**: The preferred formatters list order is important: formatters run
+from top to down.
 
 To add new formatters, or change the arguments used by an existing format, use
 the `codefmt.formatters` setting. You can set only the commands you want; no
@@ -91,7 +97,8 @@ The following example replaces the existing `rubocop` formatter to use
       "languages": ["ruby"],
       "debug": ["--debug", "--extra-details"],
       "defaultConfig": null,
-      "configFiles": [".rubocop.yml"]
+      "configFiles": [".rubocop.yml"],
+      "useStdout": false
     }
   }
 }
@@ -102,6 +109,22 @@ Notice that a formatter command may use any of this placeholders:
 - `$debug`: the position where the arguments for debugging will be inserted.
 - `$config`: the position where the config file must be inserted.
 - `$file`: the position where the file path must be inserted.
+
+For commands that output the formatted file to stdout, you can use `useStdout`.
+The requirement is that commands must exit(0). This is the default
+[jq](https://stedolan.github.io/jq/) formatter for JSON files, which sorts keys.
+
+```json
+{
+  "jq": {
+    "command": ["jq", "--sort-keys", ".", "$file"],
+    "languages": ["json"],
+    "debug": [],
+    "configFiles": [],
+    "useStdout": true
+  }
+}
+```
 
 ## License
 

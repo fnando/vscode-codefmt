@@ -5,6 +5,11 @@ All notable changes to the "codefmt" extension will be documented in this file.
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how
 to structure this file.
 
+## unreleased
+
+- Add support for commands that emits to stdout but cannot save to file.
+- Add jq formatter that sorts JSON keys.
+
 ## v0.0.3
 
 - Add support for formatters customization.

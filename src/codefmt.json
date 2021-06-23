@@ -5,14 +5,16 @@
       "languages": ["python"],
       "debug": ["--verbose"],
       "defaultConfig": null,
-      "configFiles": []
+      "configFiles": [],
+      "useStdout": false
     },
     "flutter": {
       "command": ["flutter", "format", "$file"],
       "languages": ["dart"],
       "debug": [],
       "defaultConfig": null,
-      "configFiles": []
+      "configFiles": [],
+      "useStdout": false
     },
     "dartfmt": {
       "command": [
@@ -26,7 +28,8 @@
       "languages": ["dart"],
       "debug": [],
       "defaultConfig": null,
-      "configFiles": []
+      "configFiles": [],
+      "useStdout": false
     },
     "svgo": {
       "command": [
@@ -50,7 +53,8 @@
         ".svgo.config.json",
         ".svgorc.json",
         ".svgorc.yml"
-      ]
+      ],
+      "useStdout": false
     },
     "autopep8": {
       "command": [
@@ -71,7 +75,8 @@
         "tox.ini",
         ".pep8",
         ".flake8"
-      ]
+      ],
+      "useStdout": false
     },
     "swiftformat": {
       "command": [
@@ -86,7 +91,8 @@
       "languages": ["swift"],
       "debug": ["--verbose"],
       "defaultConfig": null,
-      "configFiles": [".swiftformat"]
+      "configFiles": [".swiftformat"],
+      "useStdout": false
     },
     "php-cs-fixer": {
       "command": [
@@ -102,28 +108,32 @@
       "languages": ["php"],
       "debug": ["-vvv"],
       "defaultConfig": null,
-      "configFiles": [".php_cs"]
+      "configFiles": [".php_cs"],
+      "useStdout": false
     },
     "gofumpt": {
       "command": ["gofumpt", "-w", "$file"],
       "languages": ["go"],
       "debug": [],
       "defaultConfig": null,
-      "configFiles": []
+      "configFiles": [],
+      "useStdout": false
     },
     "goimports": {
       "command": ["goimports", "-w", "$file"],
       "languages": ["go"],
       "debug": [],
       "defaultConfig": null,
-      "configFiles": []
+      "configFiles": [],
+      "useStdout": false
     },
     "gofmt": {
       "command": ["gofmt", "-w", "$file"],
       "languages": ["go"],
       "debug": [],
       "defaultConfig": null,
-      "configFiles": []
+      "configFiles": [],
+      "useStdout": false
     },
     "rustfmt": {
       "command": [
@@ -138,7 +148,8 @@
       "languages": ["rust"],
       "debug": ["--verbose"],
       "defaultConfig": null,
-      "configFiles": ["rustfmt.toml", ".rustfmt.toml"]
+      "configFiles": ["rustfmt.toml", ".rustfmt.toml"],
+      "useStdout": false
     },
     "rubocop": {
       "command": [
@@ -152,14 +163,16 @@
       "languages": ["ruby"],
       "debug": ["--debug", "--extra-details"],
       "defaultConfig": null,
-      "configFiles": [".rubocop.yml"]
+      "configFiles": [".rubocop.yml"],
+      "useStdout": false
     },
     "rubyfmt": {
       "command": ["rubyfmt", "-i", "$file"],
       "languages": ["ruby"],
       "debug": [],
       "defaultConfig": null,
-      "configFiles": []
+      "configFiles": [],
+      "useStdout": false
     },
     "prettier": {
       "command": [
@@ -196,7 +209,8 @@
         "prettier.config.js",
         "prettier.config.cjs",
         ".prettierrc.toml"
-      ]
+      ],
+      "useStdout": false
     },
     "eslint": {
       "command": ["eslint", "$debug", "--fix", "--config", "$config", "$file"],
@@ -210,13 +224,22 @@
         ".eslintrc.yml",
         ".eslintrc.json",
         ".eslintrc"
-      ]
+      ],
+      "useStdout": false
+    },
+    "jq": {
+      "command": ["jq", "--sort-keys", ".", "$file"],
+      "languages": ["json"],
+      "debug": [],
+      "configFiles": [],
+      "useStdout": true
     }
   },
 
   "preferredFormatters": [
     "gofumpt",
     "rubocop",
+    "jq",
     "prettier",
     "eslint",
     "php-cs-fixer",
