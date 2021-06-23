@@ -1,25 +1,11 @@
 {
-  "name": "codefmt",
-  "displayName": "codefmt",
-  "description": "A plugin that allows applying code formatting with minimum configuration.",
-  "license": "MIT",
-  "repository": {
-    "url": "https://github.com/fnando/vscode-codefmt"
-  },
-  "publisher": "fnando",
-  "version": "0.0.4",
-  "engines": {
-    "vscode": "^1.57.0"
-  },
-  "categories": [
-    "Other"
-  ],
   "activationEvents": [
     "onStartupFinished",
     "onCommand:codefmt.run"
   ],
-  "main": "./out/extension.js",
-  "icon": "icon.png",
+  "categories": [
+    "Other"
+  ],
   "contributes": {
     "commands": [
       {
@@ -28,67 +14,42 @@
       }
     ],
     "configuration": {
-      "title": "Codefmt",
-      "type": "object",
       "properties": {
-        "codefmt.enableOnSave": {
-          "type": "boolean",
-          "description": "Run Codefmt on Save",
-          "default": true
-        },
         "codefmt.debug": {
-          "type": "boolean",
+          "default": false,
           "description": "When debug mode is enabled, commands will be executed with additional debugging flags",
-          "default": false
+          "type": "boolean"
         },
-        "codefmt.preferredFormatters": {
-          "type": "array",
-          "description": "List of enabled formatters",
-          "default": [
-            "gofumpt",
-            "rubocop",
-            "jq",
-            "prettier",
-            "eslint",
-            "php-cs-fixer",
-            "rustfmt",
-            "svgo",
-            "swiftformat",
-            "flutter",
-            "yapf"
-          ]
+        "codefmt.enableOnSave": {
+          "default": true,
+          "description": "Run Codefmt on Save",
+          "type": "boolean"
         },
         "codefmt.formatters": {
-          "type": "object",
-          "description": "The commands that will be used to format code.",
           "default": {
-            "yapf": {
+            "autopep8": {
               "command": [
-                "yapf",
+                "autopep8",
                 "$debug",
                 "--in-place",
+                "--aggressive",
+                "--global-config",
+                "$config",
                 "$file"
               ],
-              "languages": [
-                "python"
+              "configFiles": [
+                ".pycodestyle",
+                "setup.cfg",
+                "tox.ini",
+                ".pep8",
+                ".flake8"
               ],
               "debug": [
                 "--verbose"
               ],
-              "configFiles": [],
-              "useStdout": false
-            },
-            "flutter": {
-              "command": [
-                "flutter",
-                "format",
-                "$file"
-              ],
               "languages": [
-                "dart"
+                "python"
               ],
-              "debug": [],
-              "configFiles": [],
               "useStdout": false
             },
             "dartfmt": {
@@ -100,84 +61,106 @@
                 "--overwrite",
                 "$file"
               ],
+              "configFiles": [],
+              "debug": [],
               "languages": [
                 "dart"
               ],
-              "debug": [],
-              "configFiles": [],
               "useStdout": false
             },
-            "svgo": {
+            "eslint": {
               "command": [
-                "svgo",
-                "--config",
-                "$config",
-                "--multipass",
-                "--pretty",
-                "--input",
-                "$file",
-                "--output",
-                "$file"
-              ],
-              "languages": [
-                "text.xml.svg"
-              ],
-              "debug": [],
-              "configFiles": [
-                ".svgo.yml",
-                ".svgo.json",
-                "svgo.config.json",
-                ".svgo.config.json",
-                ".svgorc.json",
-                ".svgorc.yml"
-              ],
-              "useStdout": false
-            },
-            "autopep8": {
-              "command": [
-                "autopep8",
+                "eslint",
                 "$debug",
-                "--in-place",
-                "--aggressive",
-                "--global-config",
+                "--fix",
+                "--config",
                 "$config",
                 "$file"
               ],
-              "languages": [
-                "python"
+              "configFiles": [
+                ".eslintrc.js",
+                ".eslintrc.cjs",
+                ".eslintrc.yaml",
+                ".eslintrc.yml",
+                ".eslintrc.json",
+                ".eslintrc"
               ],
               "debug": [
-                "--verbose"
+                "--debug"
               ],
-              "configFiles": [
-                ".pycodestyle",
-                "setup.cfg",
-                "tox.ini",
-                ".pep8",
-                ".flake8"
+              "languages": [
+                "javascript",
+                "jsx",
+                "typescript",
+                "typescriptreact"
               ],
               "useStdout": false
             },
-            "swiftformat": {
+            "flutter": {
               "command": [
-                "swiftformat",
-                "$file",
-                "--output",
-                "$file",
-                "--config",
-                "$config",
-                "$debug"
+                "flutter",
+                "format",
+                "$file"
               ],
+              "configFiles": [],
+              "debug": [],
               "languages": [
-                "swift"
-              ],
-              "debug": [
-                "--verbose"
-              ],
-              "configFiles": [
-                ".swiftformat"
+                "dart"
               ],
               "useStdout": false
+            },
+            "gofmt": {
+              "command": [
+                "gofmt",
+                "-w",
+                "$file"
+              ],
+              "configFiles": [],
+              "debug": [],
+              "languages": [
+                "go"
+              ],
+              "useStdout": false
+            },
+            "gofumpt": {
+              "command": [
+                "gofumpt",
+                "-w",
+                "$file"
+              ],
+              "configFiles": [],
+              "debug": [],
+              "languages": [
+                "go"
+              ],
+              "useStdout": false
+            },
+            "goimports": {
+              "command": [
+                "goimports",
+                "-w",
+                "$file"
+              ],
+              "configFiles": [],
+              "debug": [],
+              "languages": [
+                "go"
+              ],
+              "useStdout": false
+            },
+            "jq": {
+              "command": [
+                "jq",
+                "--sort-keys",
+                ".",
+                "$file"
+              ],
+              "configFiles": [],
+              "debug": [],
+              "languages": [
+                "json"
+              ],
+              "useStdout": true
             },
             "php-cs-fixer": {
               "command": [
@@ -190,110 +173,15 @@
                 "$config",
                 "$file"
               ],
-              "languages": [
-                "php"
+              "configFiles": [
+                ".php_cs"
               ],
               "debug": [
                 "-vvv"
               ],
-              "configFiles": [
-                ".php_cs"
-              ],
-              "useStdout": false
-            },
-            "gofumpt": {
-              "command": [
-                "gofumpt",
-                "-w",
-                "$file"
-              ],
               "languages": [
-                "go"
+                "php"
               ],
-              "debug": [],
-              "configFiles": [],
-              "useStdout": false
-            },
-            "goimports": {
-              "command": [
-                "goimports",
-                "-w",
-                "$file"
-              ],
-              "languages": [
-                "go"
-              ],
-              "debug": [],
-              "configFiles": [],
-              "useStdout": false
-            },
-            "gofmt": {
-              "command": [
-                "gofmt",
-                "-w",
-                "$file"
-              ],
-              "languages": [
-                "go"
-              ],
-              "debug": [],
-              "configFiles": [],
-              "useStdout": false
-            },
-            "rustfmt": {
-              "command": [
-                "rustfmt",
-                "$debug",
-                "--emit",
-                "files",
-                "--config-path",
-                "$config",
-                "$file"
-              ],
-              "languages": [
-                "rust"
-              ],
-              "debug": [
-                "--verbose"
-              ],
-              "configFiles": [
-                "rustfmt.toml",
-                ".rustfmt.toml"
-              ],
-              "useStdout": false
-            },
-            "rubocop": {
-              "command": [
-                "rubocop",
-                "$debug",
-                "--auto-correct-all",
-                "--config",
-                "$config",
-                "$file"
-              ],
-              "languages": [
-                "ruby"
-              ],
-              "debug": [
-                "--debug",
-                "--extra-details"
-              ],
-              "configFiles": [
-                ".rubocop.yml"
-              ],
-              "useStdout": false
-            },
-            "rubyfmt": {
-              "command": [
-                "rubyfmt",
-                "-i",
-                "$file"
-              ],
-              "languages": [
-                "ruby"
-              ],
-              "debug": [],
-              "configFiles": [],
               "useStdout": false
             },
             "prettier": {
@@ -304,6 +192,22 @@
                 "--config",
                 "$config",
                 "$file"
+              ],
+              "configFiles": [
+                ".prettierrc",
+                ".prettierrc.json",
+                ".prettierrc.yml",
+                ".prettierrc.yaml",
+                ".prettierrc.json5",
+                ".prettierrc.js",
+                ".prettierrc.cjs",
+                "prettier.config.js",
+                "prettier.config.cjs",
+                ".prettierrc.toml"
+              ],
+              "debug": [
+                "--loglevel",
+                "debug"
               ],
               "languages": [
                 "css",
@@ -318,80 +222,155 @@
                 "yaml",
                 "markdown"
               ],
-              "debug": [
-                "--loglevel",
-                "debug"
-              ],
-              "configFiles": [
-                ".prettierrc",
-                ".prettierrc.json",
-                ".prettierrc.yml",
-                ".prettierrc.yaml",
-                ".prettierrc.json5",
-                ".prettierrc.js",
-                ".prettierrc.cjs",
-                "prettier.config.js",
-                "prettier.config.cjs",
-                ".prettierrc.toml"
-              ],
               "useStdout": false
             },
-            "eslint": {
+            "rubocop": {
               "command": [
-                "eslint",
+                "rubocop",
                 "$debug",
-                "--fix",
+                "--auto-correct-all",
                 "--config",
                 "$config",
                 "$file"
               ],
-              "languages": [
-                "javascript",
-                "jsx",
-                "typescript",
-                "typescriptreact"
+              "configFiles": [
+                ".rubocop.yml"
               ],
               "debug": [
-                "--debug"
+                "--debug",
+                "--extra-details"
               ],
-              "configFiles": [
-                ".eslintrc.js",
-                ".eslintrc.cjs",
-                ".eslintrc.yaml",
-                ".eslintrc.yml",
-                ".eslintrc.json",
-                ".eslintrc"
+              "languages": [
+                "ruby"
               ],
               "useStdout": false
             },
-            "jq": {
+            "rubyfmt": {
               "command": [
-                "jq",
-                "--sort-keys",
-                ".",
+                "rubyfmt",
+                "-i",
                 "$file"
               ],
+              "configFiles": [],
+              "debug": [],
               "languages": [
-                "json"
+                "ruby"
+              ],
+              "useStdout": false
+            },
+            "rustfmt": {
+              "command": [
+                "rustfmt",
+                "$debug",
+                "--emit",
+                "files",
+                "--config-path",
+                "$config",
+                "$file"
+              ],
+              "configFiles": [
+                "rustfmt.toml",
+                ".rustfmt.toml"
+              ],
+              "debug": [
+                "--verbose"
+              ],
+              "languages": [
+                "rust"
+              ],
+              "useStdout": false
+            },
+            "svgo": {
+              "command": [
+                "svgo",
+                "--config",
+                "$config",
+                "--multipass",
+                "--pretty",
+                "--input",
+                "$file",
+                "--output",
+                "$file"
+              ],
+              "configFiles": [
+                ".svgo.yml",
+                ".svgo.json",
+                "svgo.config.json",
+                ".svgo.config.json",
+                ".svgorc.json",
+                ".svgorc.yml"
               ],
               "debug": [],
+              "languages": [
+                "text.xml.svg"
+              ],
+              "useStdout": false
+            },
+            "swiftformat": {
+              "command": [
+                "swiftformat",
+                "$file",
+                "--output",
+                "$file",
+                "--config",
+                "$config",
+                "$debug"
+              ],
+              "configFiles": [
+                ".swiftformat"
+              ],
+              "debug": [
+                "--verbose"
+              ],
+              "languages": [
+                "swift"
+              ],
+              "useStdout": false
+            },
+            "yapf": {
+              "command": [
+                "yapf",
+                "$debug",
+                "--in-place",
+                "$file"
+              ],
               "configFiles": [],
-              "useStdout": true
+              "debug": [
+                "--verbose"
+              ],
+              "languages": [
+                "python"
+              ],
+              "useStdout": false
             }
-          }
+          },
+          "description": "The commands that will be used to format code.",
+          "type": "object"
+        },
+        "codefmt.preferredFormatters": {
+          "default": [
+            "gofumpt",
+            "rubocop",
+            "jq",
+            "prettier",
+            "eslint",
+            "php-cs-fixer",
+            "rustfmt",
+            "svgo",
+            "swiftformat",
+            "flutter",
+            "yapf"
+          ],
+          "description": "List of enabled formatters",
+          "type": "array"
         }
-      }
+      },
+      "title": "Codefmt",
+      "type": "object"
     },
     "configurationDefaults": {}
   },
-  "scripts": {
-    "vscode:prepublish": "yarn run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "yarn run compile && yarn run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
-  },
+  "description": "A plugin that allows applying code formatting with minimum configuration.",
   "devDependencies": {
     "@types/glob": "^7.1.3",
     "@types/mocha": "^8.2.2",
@@ -402,8 +381,29 @@
     "eslint": "^7.27.0",
     "glob": "^7.1.7",
     "mocha": "^8.4.0",
+    "prettier": "*",
     "typescript": "^4.3.2",
-    "vscode-test": "^1.5.2",
-    "prettier": "*"
-  }
+    "vscode-test": "^1.5.2"
+  },
+  "displayName": "codefmt",
+  "engines": {
+    "vscode": "^1.57.0"
+  },
+  "icon": "icon.png",
+  "license": "MIT",
+  "main": "./out/extension.js",
+  "name": "codefmt",
+  "publisher": "fnando",
+  "repository": {
+    "url": "https://github.com/fnando/vscode-codefmt"
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "pretest": "yarn run compile && yarn run lint",
+    "test": "node ./out/test/runTest.js",
+    "vscode:prepublish": "yarn run compile",
+    "watch": "tsc -watch -p ./"
+  },
+  "version": "0.0.4"
 }

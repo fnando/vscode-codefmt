@@ -1,19 +1,25 @@
 {
   "formatters": {
-    "yapf": {
-      "command": ["yapf", "$debug", "--in-place", "$file"],
-      "languages": ["python"],
+    "autopep8": {
+      "command": [
+        "autopep8",
+        "$debug",
+        "--in-place",
+        "--aggressive",
+        "--global-config",
+        "$config",
+        "$file"
+      ],
+      "configFiles": [
+        ".pycodestyle",
+        "setup.cfg",
+        "tox.ini",
+        ".pep8",
+        ".flake8"
+      ],
       "debug": ["--verbose"],
       "defaultConfig": null,
-      "configFiles": [],
-      "useStdout": false
-    },
-    "flutter": {
-      "command": ["flutter", "format", "$file"],
-      "languages": ["dart"],
-      "debug": [],
-      "defaultConfig": null,
-      "configFiles": [],
+      "languages": ["python"],
       "useStdout": false
     },
     "dartfmt": {
@@ -25,10 +31,158 @@
         "--overwrite",
         "$file"
       ],
-      "languages": ["dart"],
+      "configFiles": [],
       "debug": [],
       "defaultConfig": null,
+      "languages": ["dart"],
+      "useStdout": false
+    },
+    "eslint": {
+      "command": ["eslint", "$debug", "--fix", "--config", "$config", "$file"],
+      "configFiles": [
+        ".eslintrc.js",
+        ".eslintrc.cjs",
+        ".eslintrc.yaml",
+        ".eslintrc.yml",
+        ".eslintrc.json",
+        ".eslintrc"
+      ],
+      "debug": ["--debug"],
+      "defaultConfig": null,
+      "languages": ["javascript", "jsx", "typescript", "typescriptreact"],
+      "useStdout": false
+    },
+    "flutter": {
+      "command": ["flutter", "format", "$file"],
       "configFiles": [],
+      "debug": [],
+      "defaultConfig": null,
+      "languages": ["dart"],
+      "useStdout": false
+    },
+    "gofmt": {
+      "command": ["gofmt", "-w", "$file"],
+      "configFiles": [],
+      "debug": [],
+      "defaultConfig": null,
+      "languages": ["go"],
+      "useStdout": false
+    },
+    "gofumpt": {
+      "command": ["gofumpt", "-w", "$file"],
+      "configFiles": [],
+      "debug": [],
+      "defaultConfig": null,
+      "languages": ["go"],
+      "useStdout": false
+    },
+    "goimports": {
+      "command": ["goimports", "-w", "$file"],
+      "configFiles": [],
+      "debug": [],
+      "defaultConfig": null,
+      "languages": ["go"],
+      "useStdout": false
+    },
+    "jq": {
+      "command": ["jq", "--sort-keys", ".", "$file"],
+      "configFiles": [],
+      "debug": [],
+      "languages": ["json"],
+      "useStdout": true
+    },
+    "php-cs-fixer": {
+      "command": [
+        "php-cs-fixer",
+        "fix",
+        "$debug",
+        "--using-cache",
+        "no",
+        "--config",
+        "$config",
+        "$file"
+      ],
+      "configFiles": [".php_cs"],
+      "debug": ["-vvv"],
+      "defaultConfig": null,
+      "languages": ["php"],
+      "useStdout": false
+    },
+    "prettier": {
+      "command": [
+        "prettier",
+        "$debug",
+        "--write",
+        "--config",
+        "$config",
+        "$file"
+      ],
+      "configFiles": [
+        ".prettierrc",
+        ".prettierrc.json",
+        ".prettierrc.yml",
+        ".prettierrc.yaml",
+        ".prettierrc.json5",
+        ".prettierrc.js",
+        ".prettierrc.cjs",
+        "prettier.config.js",
+        "prettier.config.cjs",
+        ".prettierrc.toml"
+      ],
+      "debug": ["--loglevel", "debug"],
+      "defaultConfig": null,
+      "languages": [
+        "css",
+        "javascript",
+        "json",
+        "jsonc",
+        "jsx",
+        "postcss",
+        "scss",
+        "typescript",
+        "typescriptreact",
+        "yaml",
+        "markdown"
+      ],
+      "useStdout": false
+    },
+    "rubocop": {
+      "command": [
+        "rubocop",
+        "$debug",
+        "--auto-correct-all",
+        "--config",
+        "$config",
+        "$file"
+      ],
+      "configFiles": [".rubocop.yml"],
+      "debug": ["--debug", "--extra-details"],
+      "defaultConfig": null,
+      "languages": ["ruby"],
+      "useStdout": false
+    },
+    "rubyfmt": {
+      "command": ["rubyfmt", "-i", "$file"],
+      "configFiles": [],
+      "debug": [],
+      "defaultConfig": null,
+      "languages": ["ruby"],
+      "useStdout": false
+    },
+    "rustfmt": {
+      "command": [
+        "rustfmt",
+        "$debug",
+        "--emit",
+        "files",
+        "--config-path",
+        "$config",
+        "$file"
+      ],
+      "configFiles": ["rustfmt.toml", ".rustfmt.toml"],
+      "debug": ["--verbose"],
+      "defaultConfig": null,
+      "languages": ["rust"],
       "useStdout": false
     },
     "svgo": {
@@ -43,9 +197,6 @@
         "--output",
         "$file"
       ],
-      "languages": ["text.xml.svg"],
-      "debug": [],
-      "defaultConfig": null,
       "configFiles": [
         ".svgo.yml",
         ".svgo.json",
@@ -54,28 +205,9 @@
         ".svgorc.json",
         ".svgorc.yml"
       ],
-      "useStdout": false
-    },
-    "autopep8": {
-      "command": [
-        "autopep8",
-        "$debug",
-        "--in-place",
-        "--aggressive",
-        "--global-config",
-        "$config",
-        "$file"
-      ],
-      "languages": ["python"],
-      "debug": ["--verbose"],
+      "debug": [],
       "defaultConfig": null,
-      "configFiles": [
-        ".pycodestyle",
-        "setup.cfg",
-        "tox.ini",
-        ".pep8",
-        ".flake8"
-      ],
+      "languages": ["text.xml.svg"],
       "useStdout": false
     },
     "swiftformat": {
@@ -88,154 +220,21 @@
         "$config",
         "$debug"
       ],
-      "languages": ["swift"],
-      "debug": ["--verbose"],
-      "defaultConfig": null,
       "configFiles": [".swiftformat"],
-      "useStdout": false
-    },
-    "php-cs-fixer": {
-      "command": [
-        "php-cs-fixer",
-        "fix",
-        "$debug",
-        "--using-cache",
-        "no",
-        "--config",
-        "$config",
-        "$file"
-      ],
-      "languages": ["php"],
-      "debug": ["-vvv"],
-      "defaultConfig": null,
-      "configFiles": [".php_cs"],
-      "useStdout": false
-    },
-    "gofumpt": {
-      "command": ["gofumpt", "-w", "$file"],
-      "languages": ["go"],
-      "debug": [],
-      "defaultConfig": null,
-      "configFiles": [],
-      "useStdout": false
-    },
-    "goimports": {
-      "command": ["goimports", "-w", "$file"],
-      "languages": ["go"],
-      "debug": [],
-      "defaultConfig": null,
-      "configFiles": [],
-      "useStdout": false
-    },
-    "gofmt": {
-      "command": ["gofmt", "-w", "$file"],
-      "languages": ["go"],
-      "debug": [],
-      "defaultConfig": null,
-      "configFiles": [],
-      "useStdout": false
-    },
-    "rustfmt": {
-      "command": [
-        "rustfmt",
-        "$debug",
-        "--emit",
-        "files",
-        "--config-path",
-        "$config",
-        "$file"
-      ],
-      "languages": ["rust"],
       "debug": ["--verbose"],
       "defaultConfig": null,
-      "configFiles": ["rustfmt.toml", ".rustfmt.toml"],
+      "languages": ["swift"],
       "useStdout": false
     },
-    "rubocop": {
-      "command": [
-        "rubocop",
-        "$debug",
-        "--auto-correct-all",
-        "--config",
-        "$config",
-        "$file"
-      ],
-      "languages": ["ruby"],
-      "debug": ["--debug", "--extra-details"],
-      "defaultConfig": null,
-      "configFiles": [".rubocop.yml"],
-      "useStdout": false
-    },
-    "rubyfmt": {
-      "command": ["rubyfmt", "-i", "$file"],
-      "languages": ["ruby"],
-      "debug": [],
-      "defaultConfig": null,
+    "yapf": {
+      "command": ["yapf", "$debug", "--in-place", "$file"],
       "configFiles": [],
-      "useStdout": false
-    },
-    "prettier": {
-      "command": [
-        "prettier",
-        "$debug",
-        "--write",
-        "--config",
-        "$config",
-        "$file"
-      ],
-      "languages": [
-        "css",
-        "javascript",
-        "json",
-        "jsonc",
-        "jsx",
-        "postcss",
-        "scss",
-        "typescript",
-        "typescriptreact",
-        "yaml",
-        "markdown"
-      ],
-      "debug": ["--loglevel", "debug"],
+      "debug": ["--verbose"],
       "defaultConfig": null,
-      "configFiles": [
-        ".prettierrc",
-        ".prettierrc.json",
-        ".prettierrc.yml",
-        ".prettierrc.yaml",
-        ".prettierrc.json5",
-        ".prettierrc.js",
-        ".prettierrc.cjs",
-        "prettier.config.js",
-        "prettier.config.cjs",
-        ".prettierrc.toml"
-      ],
+      "languages": ["python"],
       "useStdout": false
-    },
-    "eslint": {
-      "command": ["eslint", "$debug", "--fix", "--config", "$config", "$file"],
-      "languages": ["javascript", "jsx", "typescript", "typescriptreact"],
-      "debug": ["--debug"],
-      "defaultConfig": null,
-      "configFiles": [
-        ".eslintrc.js",
-        ".eslintrc.cjs",
-        ".eslintrc.yaml",
-        ".eslintrc.yml",
-        ".eslintrc.json",
-        ".eslintrc"
-      ],
-      "useStdout": false
-    },
-    "jq": {
-      "command": ["jq", "--sort-keys", ".", "$file"],
-      "languages": ["json"],
-      "debug": [],
-      "configFiles": [],
-      "useStdout": true
     }
   },
-
   "preferredFormatters": [
     "gofumpt",
     "rubocop",
