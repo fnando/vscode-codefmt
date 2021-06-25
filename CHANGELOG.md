@@ -5,6 +5,12 @@ All notable changes to the "codefmt" extension will be documented in this file.
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how
 to structure this file.
 
+## unreleased
+
+- Formatter languages will be matched against a regex now (e.g `ruby` will be
+  matched against `^ruby(-[a-z0-9]+)*$`. This allows formatting language
+  extensions, like `ruby-bundler`.
+
 ## v0.0.4
 
 - Add support for commands that emits to stdout but cannot save to file.

@@ -3,7 +3,7 @@ import * as path from "path";
 import { existsSync, writeFileSync } from "fs";
 import { spawnSync, SpawnSyncReturns } from "child_process";
 
-import * as _settings from "./codefmt.json";
+import * as settings from "./codefmt.json";
 import "./config/eslint.json";
 import "./config/prettier.json";
 
@@ -91,10 +91,16 @@ export async function format({
   ) ?? [path.dirname(document.fileName)];
   const rootDir = findRootDir(dirs, document.fileName);
 
+  process.chdir(rootDir);
+
   debug("current dir:", process.cwd());
   debug("root dir:", rootDir);
   debug("file:", document.fileName);
   debug("language:", document.languageId);
+  debug(
+    "will format files whose language match",
+    `^${document.languageId}(-[a-z0-9]+)*$`,
+  );
 
   const formatters = findFormatters(document.languageId);
 
@@ -119,15 +125,20 @@ export async function format({
 }
 
 function findFormatters(languageId: string): Formatter[] {
+  const matcher = new RegExp(`^${languageId}(-[a-z0-9])*$`);
+
   const formatters: Formatters = {
-    ..._settings.formatters,
+    ...settings.formatters,
     ...config().formatters,
   };
 
   return config()
     .preferredFormatters.map((formatter) => formatters[formatter])
-    .filter(Boolean)
-    .filter((formatter) => formatter.languages.includes(languageId));
+    .filter(
+      (formatter) =>
+        formatter &&
+        formatter.languages.some((language) => language.match(matcher)),
+    );
 }
 
 function run({
@@ -139,7 +150,6 @@ function run({
   formatter: Formatter;
   rootDir: string;
 }) {
-  const started = Date.now();
   const { fileName } = document;
   const formatterName = formatter.command[0];
   const quotedFormatterName = JSON.stringify(formatterName);
@@ -161,7 +171,6 @@ function run({
   });
 
   const spawnOptions = { cwd: rootDir, env: process.env };
-
   let response: SpawnSyncReturns<Buffer>;
 
   response = spawnSync("which", [command], spawnOptions);
