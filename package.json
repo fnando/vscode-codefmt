@@ -405,5 +405,5 @@
     "vscode:prepublish": "yarn run compile",
     "watch": "tsc -watch -p ./"
   },
-  "version": "0.0.4"
+  "version": "0.0.5"
 }
