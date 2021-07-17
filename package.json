@@ -4,7 +4,7 @@
     "onCommand:codefmt.run"
   ],
   "categories": [
-    "Other"
+    "Formatters"
   ],
   "contributes": {
     "commands": [
@@ -405,5 +405,5 @@
     "vscode:prepublish": "yarn run compile",
     "watch": "tsc -watch -p ./"
   },
-  "version": "0.0.5"
+  "version": "0.0.6"
 }
