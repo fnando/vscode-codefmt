@@ -2,6 +2,10 @@
 
 All notable changes to the "codefmt" extension will be documented in this file.
 
+## v0.0.7
+
+- Fix language matcher.
+
 ## v0.0.6
 
 - Set proper extension category.

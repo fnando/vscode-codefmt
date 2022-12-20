@@ -378,6 +378,7 @@
     "@types/vscode": "^1.57.0",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
+    "@vscode/vsce": "^2.15.0",
     "eslint": "^7.27.0",
     "glob": "^7.1.7",
     "mocha": "^8.4.0",
@@ -405,5 +406,5 @@
     "vscode:prepublish": "yarn run compile",
     "watch": "tsc -watch -p ./"
   },
-  "version": "0.0.6"
+  "version": "0.0.7"
 }
