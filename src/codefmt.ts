@@ -97,10 +97,6 @@ export async function format({
   debug("root dir:", rootDir);
   debug("file:", document.fileName);
   debug("language:", document.languageId);
-  debug(
-    "will format files whose language match",
-    `^${document.languageId}(-[a-z0-9]+)*$`,
-  );
 
   const formatters = findFormatters(document.languageId);
 
@@ -125,8 +121,6 @@ export async function format({
 }
 
 function findFormatters(languageId: string): Formatter[] {
-  const matcher = new RegExp(`^${languageId}(-[a-z0-9])*$`);
-
   const formatters: Formatters = {
     ...settings.formatters,
     ...config().formatters,
@@ -137,7 +131,9 @@ function findFormatters(languageId: string): Formatter[] {
     .filter(
       (formatter) =>
         formatter &&
-        formatter.languages.some((language) => language.match(matcher)),
+        formatter.languages.some((matcher) =>
+          new RegExp(`^${matcher}(-[a-z0-9]+)*$`, "i").test(languageId),
+        ),
     );
 }
 
