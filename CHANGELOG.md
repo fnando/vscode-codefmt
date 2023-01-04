@@ -2,7 +2,7 @@
 
 All notable changes to the "codefmt" extension will be documented in this file.
 
-## Unreleased
+## v0.0.9
 
 - Add `--inplace` to pg_formatter.
 
