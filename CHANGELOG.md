@@ -2,6 +2,14 @@
 
 All notable changes to the "codefmt" extension will be documented in this file.
 
+## Unreleased
+
+- Add `--inplace` to pg_formatter.
+
+## v0.0.8
+
+- Add pg_formatter.
+
 ## v0.0.7
 
 - Fix language matcher.

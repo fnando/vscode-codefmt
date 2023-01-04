@@ -165,18 +165,20 @@
             "pg_format": {
               "command": [
                 "pg_format",
+                "--inplace",
                 "--config",
                 "$config",
                 "$file"
               ],
               "configFiles": [
-                ".pg_format"
+                ".pg_format",
+                "pg_format.conf"
               ],
               "debug": [],
               "languages": [
                 "postgres"
               ],
-              "useStdout": true
+              "useStdout": false
             },
             "php-cs-fixer": {
               "command": [
