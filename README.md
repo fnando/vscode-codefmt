@@ -13,6 +13,7 @@ Includes support for running the following formatters:
 - [Golang’s gofumpt](https://pkg.go.dev/mvdan.cc/gofumpt)
 - [Python’s autopep8](https://pypi.org/project/autopep8/)
 - [Python’s yapf](https://pypi.org/project/yapf/)
+- [Postgres’s pg_formatter](https://github.com/darold/pgFormatter)
 - [PHP Code Standards Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer)
 - [Rust’s rustfmt](https://github.com/rust-lang/rustfmt)
 - [SVGO](https://github.com/svg/svgo)
@@ -35,14 +36,15 @@ By default, the following formatters will be used:
 [
   "gofumpt",
   "rubocop",
+  "jq",
   "prettier",
   "eslint",
-  "jq",
   "php-cs-fixer",
   "rustfmt",
   "svgo",
   "swiftformat",
   "flutter",
+  "pg_format",
   "yapf"
 ]
 ```
@@ -66,6 +68,7 @@ The following example uses `rubyfmt` instead of `rubocop`.
     "svgo",
     "swiftformat",
     "flutter",
+    "pg_format",
     "yapf"
   ]
 }

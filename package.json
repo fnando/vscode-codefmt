@@ -162,6 +162,22 @@
               ],
               "useStdout": true
             },
+            "pg_format": {
+              "command": [
+                "pg_format",
+                "--config",
+                "$config",
+                "$file"
+              ],
+              "configFiles": [
+                ".pg_format"
+              ],
+              "debug": [],
+              "languages": [
+                "postgres"
+              ],
+              "useStdout": true
+            },
             "php-cs-fixer": {
               "command": [
                 "php-cs-fixer",
@@ -359,6 +375,7 @@
             "svgo",
             "swiftformat",
             "flutter",
+            "pg_format",
             "yapf"
           ],
           "description": "List of enabled formatters",
